@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="smart.application.appoint.dao.EquipmentTypeMapper">
+    <sql id="selectEquipmentType">
+        SELECT
+            equipment_type.id,
+            equipment_type.`name`
+        FROM
+            equipment_type
+    </sql>
+
+    <select id="selectEquipmentTypeByPage" resultType="EquipmentType">
+        <include refid="selectEquipmentType"/>
+        LIMIT #{page}, #{maxNumber}
+    </select>
+
+    <select id="existEquipmentTypeByName" resultType="boolean">
+        SELECT
+            COUNT(id)
+        FROM
+            equipment_type
+        WHERE name = #{name}
+    </select>
+
+    <select id="countEquipmentType" resultType="int">
+        SELECT COUNT(id) FROM equipment_type
+    </select>
+
+    <select id="selectEquipmentTypeById" resultType="EquipmentType">
+        <include refid="selectEquipmentType"/>
+        WHERE
+            id = #{id}
+    </select>
+
+    <select id="selectEquipmentTypeByName" resultType="EquipmentType">
+        <include refid="selectEquipmentType"/>
+        WHERE
+            `name` = #{name}
+    </select>
+
+    <insert id="save">
+        INSERT INTO equipment_type (
+            equipment_type.name
+        ) VALUES (
+            #{name}
+        )
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM equipment_type WHERE id = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE equipment_type SET name = #{name} WHERE id = #{id}
+    </update>
+</mapper>

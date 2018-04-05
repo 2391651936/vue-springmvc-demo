@@ -1,0 +1,29 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+
+.el-header {
+	background-color: #f8f8f8;
+}
+
+.title {
+	color: #777;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+i {
+	margin: 0 4px;
+}
+
+label{
+	display: inline-block;
+	max-width: 100%;
+	margin-bottom: 5px;
+	font-weight: 700;
+}
+
+.form-control {
+	margin: 15px 0;
+}

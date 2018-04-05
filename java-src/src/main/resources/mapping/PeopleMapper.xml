@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="smart.application.appoint.dao.PeopleMapper">
+    <sql id="selectPeople">
+        SELECT
+            people_type.id AS tid,
+            people_type.`name` AS tname,
+            people.id AS pid,
+            people.people_type_id,
+            people.username,
+            people.`password`,
+            people.`name` AS pname,
+            people.phone,
+            people.email,
+            people.is_use
+        FROM
+            people
+        INNER JOIN people_type ON people.people_type_id = people_type.id
+    </sql>
+
+    <resultMap id="peopleMap" type="People">
+        <id property="id" column="pid"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="name" column="pname"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="isUse" column="is_use"/>
+        <association property="peopleType" javaType="PeopleType">
+            <id property="id" column="tid"/>
+            <result property="name" column="tname"/>
+        </association>
+    </resultMap>
+    <select id="selectPeopleByUsername" resultMap="peopleMap">
+        <include refid="selectPeople" />
+        WHERE
+            people.username = #{username}
+    </select>
+
+    <select id="selectPeopleById" resultMap="peopleMap">
+        <include refid="selectPeople" />
+        WHERE
+            people.id = #{id}
+    </select>
+
+    <select id="countPeople" resultType="int">
+        SELECT
+            COUNT(id) AS sum
+        FROM
+            people
+        WHERE
+            is_use = TRUE
+    </select>
+
+    <select id="countPeopleByPeopleType" resultType="int">
+        SELECT
+           COUNT(id) AS sum
+        FROM
+            people
+        WHERE
+            people_type_id = #{peopleType}
+        AND
+            is_use = TRUE
+    </select>
+
+    <select id="selectPeopleByPage" resultMap="peopleMap">
+        <include refid="selectPeople" />
+        <where>
+            <if test="peopleType != 0">
+                AND people.people_type_id = #{peopleType}
+            </if>
+        </where>
+        AND people.is_use = TRUE
+        ORDER BY
+            pid DESC
+        LIMIT #{page}, #{maxNumber}
+    </select>
+
+    <select id="selectPeopleType" resultType="PeopleType">
+        SELECT
+            people_type.id,
+            people_type.`name`
+        FROM
+            people_type
+    </select>
+
+    <select id="existPeopleByUsername" resultType="boolean">
+        SELECT
+            COUNT(id)
+        FROM
+            people
+        WHERE
+            username = #{username}
+    </select>
+
+    <insert id="save">
+        INSERT INTO people (
+            people.people_type_id,
+            people.username,
+            people.`password`,
+            people.`name`,
+            people.phone,
+            people.email,
+            people.is_use
+        ) VALUES (
+            #{peopleType.id},
+            #{username},
+            #{password},
+            #{name},
+            #{phone},
+            #{email},
+            #{isUse}
+        )
+    </insert>
+
+    <update id="deleteById">
+        UPDATE people SET is_use = FALSE WHERE id = #{id}
+    </update>
+
+    <update id="update">
+        UPDATE people
+        SET
+            people.people_type_id = #{peopleType.id},
+            people.`password` = #{password},
+            people.`name` = #{name},
+            people.phone = #{phone},
+            people.email = #{email},
+            people.is_use = #{isUse}
+        WHERE
+            id = #{id}
+    </update>
+</mapper>

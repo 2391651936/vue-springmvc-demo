@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="smart.application.appoint.dao.InformationMapper">
+    <resultMap id="informationMap" type="Information">
+        <id property="id" column="id"/>
+        <result property="releaseTime" column="release_time"/>
+        <result property="isRelease" column="is_release"/>
+        <result property="context" column="context"/>
+        <result property="title" column="title"/>
+        <result property="isUse"  column="is_use"/>
+        <association property="informationType" javaType="InformationType">
+            <id property="id" column="tid"/>
+            <result property="name" column="name"/>
+        </association>
+    </resultMap>
+
+    <sql id="selectInformation">
+        SELECT
+            information_type.id AS tid,
+            information_type.`name`,
+            information.id,
+            information.information_type_id,
+            information.context,
+            information.title,
+            information.release_time,
+            information.is_release,
+            information.is_use
+        FROM
+            information
+    </sql>
+
+    <select id="selectInformationByInformationTypeIdAndIsUseAndIsRelease" resultMap="informationMap">
+        <include refid="selectInformation"/>
+        INNER JOIN information_type ON information.information_type_id = information_type.id
+        <where>
+            <if test="id != null">
+                AND information_type.id = #{id}
+            </if>
+            <if test="isUse != null">
+                AND information.is_use = #{isUse}
+            </if>
+            <if test="isRelease != null">
+                AND information.is_use = #{isRelease}
+            </if>
+        </where>
+        ORDER BY
+          information.release_time DESC
+    </select>
+
+    <select id="selectInformationOne" resultMap="informationMap">
+        <include refid="selectInformation"/>
+        INNER JOIN information_type ON information.information_type_id = information_type.id
+        WHERE
+          information.id = #{id}
+    </select>
+
+    <select id="selectInformationByPage" resultMap="informationMap">
+        <include refid="selectInformation"/>
+        INNER JOIN information_type ON information.information_type_id = information_type.id
+        WHERE
+            information_type.id = 1 AND information.is_use = TRUE
+        Limit #{page}, #{per_page}
+    </select>
+
+    <insert id="save">
+        INSERT INTO information (
+            id,
+            information_type_id,
+            context,
+            title,
+            release_time,
+            is_release,
+            is_use
+        ) VALUES (
+            #{id},
+            #{informationType.id},
+            #{context},
+            #{title},
+            #{releaseTime},
+            #{isRelease},
+            #{isUse}
+        )
+    </insert>
+
+    <update id="deleteById">
+        UPDATE information SET is_use = FALSE WHERE id = #{id}
+    </update>
+
+    <update id="update">
+        UPDATE information
+        SET
+            information_type_id = #{informationType.id},
+            context = #{context},
+            title = #{title},
+            is_release = #{isRelease}
+        WHERE id = #{id}
+    </update>
+</mapper>
