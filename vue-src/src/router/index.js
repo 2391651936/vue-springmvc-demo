@@ -1,21 +1,23 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import information from '@/components/information/information'
-import editInformation from '@/components/information/editInformation'
+import base from '@/components/admin/base'
+import login from '@/components/admin/login'
+import admin from './admin'
 
 Vue.use(Router);
 
 export default new Router({
 	routes: [
 		{
-			path: '/',
-			name: 'information',
-			component: information
+			path: '/admin',
+			component: base,
+			children: admin     // 代表下级路由
 		},
 		{
-			path: '/editInformation',
-			name: 'editInformation',
-			component: editInformation
+			path: '/login',
+			name: 'login',
+			component: login,
+			meta: {requireAuth: false}
 		}
 	]
 })

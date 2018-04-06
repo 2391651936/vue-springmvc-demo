@@ -1,6 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import Vuex from 'vuex'
 import App from './App'
 import router from './router'
 import Element from "element-ui"
@@ -12,15 +13,39 @@ Vue.config.productionTip = false;
 
 Vue.use(Element);
 Vue.use(VueResource);
+Vue.use(Vuex);
 
 Vue.prototype.HOST = "http://localhost:8080/v1";
+Vue.prototype.ROUTER = router;
+
+Vue.http.interceptors.push((request, next)=>{
+	request.headers.set('token', store.state.token); // 请求headers携带参数
+	next(response => {
+		return  response;
+	});
+});
+
+const store = new Vuex.Store({
+	state: {
+		domain: "http://127.0.0.1:8080/v1",
+		user: {},
+		token: 0,
+	},
+	mutations: {
+		//更新用户信息
+		updateUserInfo(state, id) {
+			state.token = id;
+		}
+	}
+});
 
 /* eslint-disable no-new */
 new Vue({
-    el: '#app',
-    router,
-    components: { App },
-    template: '<App/>'
+	el: '#app',
+	router,
+	store,
+	components: { App },
+	template: '<App/>',
 });
 
 
@@ -44,3 +69,24 @@ Date.prototype.format = function(fmt) {
 	}
 	return fmt;
 };
+
+
+// router.beforeEach((to, form, next) => {
+// 	if (to.meta.requireAuth) {
+// 		if (!isEmptyObject(store.state.user)) {
+// 			next();
+// 		} else {
+// 			next({name: "login"});
+// 		}
+// 	} else {
+// 		next();
+// 	}
+// });
+
+function isEmptyObject(obj) {
+	for (let key in obj) {
+		console.log(key);
+		return false;
+	}
+	return true;
+}

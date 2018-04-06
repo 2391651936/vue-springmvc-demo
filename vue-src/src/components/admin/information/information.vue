@@ -45,7 +45,7 @@
             </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <router-link :to="{name: 'editInformation', params:{id: scope.row.id}}">
+                    <router-link :to="{name: 'editInformation', query:{id: scope.row.id}}">
                         <el-button
                             size="mini"
                             >编辑
@@ -63,8 +63,7 @@
 </template>
 
 <script>
-	import firstTitle from '../title.vue'
-	import ElCol from "element-ui/packages/col/src/col";
+	import firstTitle from '../../title.vue'
 
 	export default {
 		name: 'information',
@@ -75,15 +74,16 @@
 			}
 		},
 		components: {
-			ElCol,
-			firstTitle},
+			firstTitle
+        },
         created: function () {
-            this.$http.get(this.HOST + "/informations", {page: 1, per_page: 10}).then(response => {
+			console.log(this.$store.state.token);
+            this.$http.get(this.$store.state.domain + "/admin/informations", {page: 1, per_page: 10}).then(response => {
             	this.informations = response.data;
             }, response => {
             	console.log(response);
             });
-		},
+        },
 	}
 </script>
 

@@ -7,60 +7,58 @@
             <first-title name="修改公告"></first-title>
         </template>
 
-        <div class="form-control">
-            <label>标题</label>
-            <el-input
-                    v-model="information.title"
-                    placeholder="请输入标题"
-                    clearable>
-            </el-input>
-        </div>
+        <el-form>
+            <el-form-item label="标题">
+                <el-input
+                        v-model="information.title"
+                        placeholder="请输入标题"
+                        clearable>
+                </el-input>
+            </el-form-item>
 
-        <div class="form-control">
-            <label>类别</label>
-            <el-select
-                    v-model="information.informationType.id"
-                    placeholder="请选择类别" style="width: 100%;">
-                <el-option
-                        v-for="informationType in informationTypes"
-                        :key="informationType.id"
-                        :value="informationType.id"
-                        :label="informationType.name">
-                </el-option>
-            </el-select>
-        </div>
+            <el-form-item label="类别">
+                <el-select
+                        v-model="information.informationType.id"
+                        placeholder="请选择类别" style="width: 100%;">
+                    <el-option
+                            v-for="informationType in informationTypes"
+                            :key="informationType.id"
+                            :value="informationType.id"
+                            :label="informationType.name">
+                    </el-option>
+                </el-select>
+            </el-form-item>
 
-        <div class="form-control">
-            <label>信息内容</label>
-            <el-input
-                    type="textarea"
-                    :rows="4"
-                    placeholder="请输入内容"
-                    v-model="information.context">
-            </el-input>
-        </div>
+            <el-form-item label="信息内容">
+                <el-input
+                        type="textarea"
+                        :rows="4"
+                        placeholder="请输入内容"
+                        v-model="information.context">
+                </el-input>
+            </el-form-item>
 
-        <div class="form-control">
-            <label>是否发布</label>
-            <el-switch
-                    v-model="information.isRelease"
-                    activeColor="#13ce66"
-                    inactiveColor="#ff4949" style="margin-left: 1%;">
-            </el-switch>
-        </div>
+            <el-form-item label="是否发布">
+                <el-switch
+                        v-model="information.isRelease"
+                        activeColor="#13ce66"
+                        inactiveColor="#ff4949" style="margin-left: 1%;">
+                </el-switch>
+            </el-form-item>
 
-        <div>
             <router-link :to="{name: 'information'}">
                 <el-button size="small" plain="">返回</el-button>
             </router-link>
             <el-button size="small" type="primary" plain
-                        @click="submit">提交</el-button>
-        </div>
+                       @click="submit">提交</el-button>
+        </el-form>
     </div>
 </template>
 
 <script>
-	import firstTitle from '../title.vue'
+	import firstTitle from '../../title.vue'
+	import ElFormItem from "../../../../node_modules/element-ui/packages/form/src/form-item.vue";
+	import ElForm from "../../../../node_modules/element-ui/packages/form/src/form.vue";
 
     export default {
 		name: 'editInformation',
@@ -81,7 +79,9 @@
             }
         },
         components: {
-			firstTitle
+	        ElForm,
+	        ElFormItem,
+	        firstTitle
         },
         created: function () {
 			// 获取所有类别
@@ -92,11 +92,10 @@
             });
 
             // 获取由上个页面传过来的 id
-			this.id = this.$route.params.id;
+			this.id = this.$route.query.id;
 			if (this.id !== undefined) {
 				this.$http.get(this.HOST + "/informations/" + this.id).then(res => {
 					this.information = res.data;
-					console.log(this.information)
 				}, res => {
 					console.log(res);
 				});

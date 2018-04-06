@@ -10,9 +10,9 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/v1")
+@RequestMapping("/v1/admin")
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class InfomationController {
 
     @Resource
@@ -34,7 +34,7 @@ public class InfomationController {
         return informationService.selectInformationOne(id);
     }
 
-    @PostMapping("/information")
+    @PostMapping("/informations")
     public String addInformation(@RequestBody Information information) {
         information.setReleaseTime(new Date());
         information.setIsUse(true);

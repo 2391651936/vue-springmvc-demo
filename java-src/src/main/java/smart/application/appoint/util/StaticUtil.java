@@ -9,4 +9,6 @@ public class StaticUtil {
     public static final String CREATE_OK = "1";  // 提交成功
     public static final String EXIST = "0";  // 已经存在
     public static final String APPEAR_ERROR = "-1";  // 出现异常
+    public static final String USERNAME_NOT_FOUND = "1001";  // 账号不存在
+    public static final String PASSWORD_ERROR = "1002";  // 密码不正确
 }
