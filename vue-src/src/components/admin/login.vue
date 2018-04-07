@@ -53,7 +53,6 @@
                 }
                 this.$http.post("http://127.0.0.1:8080/v1/login", JSON.stringify(this.user)).then(res => {
                     let data = res.bodyText;
-                    console.log(data)
                     if (data === 1001) {
                         this.$notify({
                             message: '账号不存在',

@@ -1,7 +1,5 @@
 package smart.application.appoint.controller.admin;
 
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +12,6 @@ import java.util.List;
 
 @RequestMapping("/v1/admin")
 @RestController
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class InformationTypeController {
 
     @Resource

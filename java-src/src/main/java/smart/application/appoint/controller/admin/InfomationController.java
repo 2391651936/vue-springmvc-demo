@@ -12,7 +12,6 @@ import java.util.List;
 
 @RequestMapping("/v1/admin")
 @RestController
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class InfomationController {
 
     @Resource
