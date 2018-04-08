@@ -85,7 +85,7 @@
         },
         created: function () {
 			// 获取所有类别
-            this.$http.get(this.HOST + "/admin/informationTypes").then(response => {
+            this.$http.get(this.$store.state.domain + "/admin/informationTypes").then(response => {
             	this.informationTypes = response.data;
             }, response => {
             	console.log(response);
@@ -94,7 +94,7 @@
             // 获取由上个页面传过来的 id
 			this.id = this.$route.query.id;
 			if (this.id !== undefined) {
-				this.$http.get(this.HOST + "/admin/informations/" + this.id).then(res => {
+				this.$http.get(this.$store.state.domain + "/admin/informations/" + this.id).then(res => {
 					this.information = res.data;
 				}, res => {
 					console.log(res);
@@ -105,7 +105,7 @@
 			submit: function () {
 				// id === undefined 代表创建
 				if (this.id === undefined) {
-					this.$http.post(this.HOST + "/information", JSON.stringify(this.information)).then(res => {
+					this.$http.post(this.$store.state.domain + "/information", JSON.stringify(this.information)).then(res => {
 						if (res.data === 1) {
 							this.$message({
 								message: "操作成功，请返回",

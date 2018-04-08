@@ -12,9 +12,11 @@ import javax.annotation.Resource;
 @SpringBootTest
 public class AppointApplicationTests {
 
+	@Resource
+    private InformationService informationService;
 
 	@Test
 	public void contextLoads() {
+        System.out.println(informationService.countInformations());
 	}
-
 }

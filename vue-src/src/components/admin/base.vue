@@ -79,8 +79,21 @@
 		},
         methods: {
 			logout: function () {
-				this.$store.commit("updateUserInfo", {});
-                this.ROUTER.push({name: "login"});
+				this.$store.commit("updateToken", "");
+				this.$http.post(this.$store.state.domain + "/logout").then(res => {
+					let data = res.bodyText;
+					if (data === '1000') {
+						this.$router.push({name: "login"});
+                    } else {
+						this.$notify({
+                            message: '服务器异常',
+                            type: 'warning'
+                        });
+                    }
+                }, res => {
+					console.log(res);
+                });
+
 			}
         }
 	}

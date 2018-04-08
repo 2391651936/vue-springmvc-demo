@@ -64,6 +64,15 @@
         Limit #{page}, #{per_page}
     </select>
 
+    <select id="countInformations" resultType="int">
+        SELECT
+            count(id) AS sum
+        FROM
+            information
+        WHERE
+            is_use = TRUE and information_type_id = 1
+    </select>
+
     <insert id="save">
         INSERT INTO information (
             id,

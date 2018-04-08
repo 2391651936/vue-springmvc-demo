@@ -51,7 +51,7 @@
                         }
                     }
                 }
-                this.$http.post("http://127.0.0.1:8080/v1/login", JSON.stringify(this.user)).then(res => {
+                this.$http.post(this.$store.state.domain + "/login", JSON.stringify(this.user)).then(res => {
                     let data = res.bodyText;
                     if (data === 1001) {
                         this.$notify({
@@ -64,8 +64,8 @@
                             type: 'warning'
                         });
                     } else {
-                    	this.$store.commit("updateUserInfo", data);
-                        this.ROUTER.push({name: "information"});
+                        this.$store.commit("updateToken", data);
+                        this.$router.push({name: "information"});
                     }
                 }, res => {
                     console.log(res)

@@ -32,6 +32,11 @@ public class InformationService implements InformationMapper {
     }
 
     @Override
+    public int countInformations() {
+        return informationMapper.countInformations();
+    }
+
+    @Override
     public void save(Information information) {
         informationMapper.save(information);
     }

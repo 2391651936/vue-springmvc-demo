@@ -59,6 +59,14 @@
                 </template>
             </el-table-column>
         </el-table>
+        <div class="block">
+            <el-pagination
+                    :current-page.sync="currentPage"
+                    :page-size="pageSize"
+                    layout="prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
+        </div>
     </div>
 </template>
 
@@ -70,20 +78,33 @@
 		data() {
 			return {
 				informations: [],
-                replace: true
+                currentPage: 1,
+                pageSize: 3,
+                total: 0,
 			}
 		},
 		components: {
 			firstTitle
         },
-        created: function () {
-			console.log(this.$store.state.token);
-            this.$http.get(this.$store.state.domain + "/admin/informations", {page: 1, per_page: 10}).then(response => {
-            	this.informations = response.data;
-            }, response => {
-            	console.log(response);
-            });
+        methods: {
+			_getInformations: function() {
+				this.$http.get(this.$store.state.domain + "/admin/informations", {
+					'page': this.currentPage, per_page: this.pageSize
+				}, {emulateJSON: true}).then(response => {
+					this.informations = response.data;
+				}, response => {
+					console.log(response);
+				});
+            },
         },
+		created: function () {
+			this.$http.get(this.$store.state.domain + "/admin/information/count").then(res => {
+				this.total = res.body;
+			}, res => {
+				console.log(res);
+			});
+			console.log(this._getInformations())
+		},
 	}
 </script>
 
@@ -105,5 +126,9 @@
 
     a {
         color: #42b983;
+    }
+
+    .block{
+        margin-top: 2%;
     }
 </style>
