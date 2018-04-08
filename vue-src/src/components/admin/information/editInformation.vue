@@ -85,7 +85,7 @@
         },
         created: function () {
 			// 获取所有类别
-            this.$http.get(this.HOST + "/informationTypes").then(response => {
+            this.$http.get(this.HOST + "/admin/informationTypes").then(response => {
             	this.informationTypes = response.data;
             }, response => {
             	console.log(response);
@@ -94,7 +94,7 @@
             // 获取由上个页面传过来的 id
 			this.id = this.$route.query.id;
 			if (this.id !== undefined) {
-				this.$http.get(this.HOST + "/informations/" + this.id).then(res => {
+				this.$http.get(this.HOST + "/admin/informations/" + this.id).then(res => {
 					this.information = res.data;
 				}, res => {
 					console.log(res);

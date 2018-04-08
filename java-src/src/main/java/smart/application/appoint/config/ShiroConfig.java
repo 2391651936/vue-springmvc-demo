@@ -1,6 +1,5 @@
 package smart.application.appoint.config;
 
-import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -12,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import smart.application.appoint.shiro.AuthRealm;
 import smart.application.appoint.shiro.CredentialsMatcher;
-import smart.application.appoint.shiro.MySessionManager;
 
 import java.util.LinkedHashMap;
 
@@ -28,8 +26,7 @@ public class ShiroConfig {
         // 配置访问权限
         LinkedHashMap<String, String> filterChainDefinitionMap=new LinkedHashMap<>();
         filterChainDefinitionMap.put("/v1/login", "anon");
-        filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/v1/admin/*git ", "authc");
+        filterChainDefinitionMap.put("/v1/admin/**", "authc");
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return bean;
     }

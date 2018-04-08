@@ -13,17 +13,11 @@ Vue.config.productionTip = false;
 
 Vue.use(Element);
 Vue.use(VueResource);
+Vue.http.options.xhr = { withCredentials: true };
 Vue.use(Vuex);
 
 Vue.prototype.HOST = "http://localhost:8080/v1";
 Vue.prototype.ROUTER = router;
-
-Vue.http.interceptors.push((request, next)=>{
-	request.headers.set('token', store.state.token); // 请求headers携带参数
-	next(response => {
-		return  response;
-	});
-});
 
 const store = new Vuex.Store({
 	state: {
@@ -37,6 +31,11 @@ const store = new Vuex.Store({
 			state.token = id;
 		}
 	}
+});
+
+Vue.http.interceptors.push((request, next) => {
+	request.credentials = true;
+	next();
 });
 
 /* eslint-disable no-new */
