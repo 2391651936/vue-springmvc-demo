@@ -29,7 +29,7 @@ public class ShiroConfig {
         LinkedHashMap<String, String> filterChainDefinitionMap=new LinkedHashMap<>();
         filterChainDefinitionMap.put("/v1/login", "anon");
         filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/v1/admin/*", "authc");
+        filterChainDefinitionMap.put("/v1/admin/*git ", "authc");
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return bean;
     }
@@ -73,12 +73,5 @@ public class ShiroConfig {
         AuthorizationAttributeSourceAdvisor advisor=new AuthorizationAttributeSourceAdvisor();
         advisor.setSecurityManager(manager);
         return advisor;
-    }
-
-    // 定义 sessionManager
-    @Bean
-    public SessionManager sessionManager() {
-        MySessionManager mySessionManager = new MySessionManager();
-        return mySessionManager;
     }
 }
