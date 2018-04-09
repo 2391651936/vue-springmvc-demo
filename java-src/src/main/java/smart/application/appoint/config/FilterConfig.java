@@ -3,13 +3,13 @@ package smart.application.appoint.config;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import smart.application.appoint.filter.MyFilter;
+import smart.application.appoint.filter.CorsFilter;
 
 @Configuration
 public class FilterConfig {
 
     @Bean
-    public FilterRegistrationBean filterRegistrationBean() {
+    public FilterRegistrationBean corsFilterRegistrationBean() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         filterRegistrationBean.setFilter(myFilter());
         filterRegistrationBean.addUrlPatterns("/*");
@@ -21,7 +21,7 @@ public class FilterConfig {
     }
 
     @Bean
-    public MyFilter myFilter() {
-        return new MyFilter();
+    public CorsFilter myFilter() {
+        return new CorsFilter();
     }
 }

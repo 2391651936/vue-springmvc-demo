@@ -10,7 +10,6 @@
             people.id AS pid,
             people.people_type_id,
             people.username,
-            people.`password`,
             people.`name` AS pname,
             people.phone,
             people.email,
@@ -34,7 +33,20 @@
         </association>
     </resultMap>
     <select id="selectPeopleByUsername" resultMap="peopleMap">
-        <include refid="selectPeople" />
+        SELECT
+            people_type.id AS tid,
+            people_type.`name` AS tname,
+            people.id AS pid,
+            people.people_type_id,
+            people.username,
+            people.`password`,
+            people.`name` AS pname,
+            people.phone,
+            people.email,
+            people.is_use
+        FROM
+            people
+        INNER JOIN people_type ON people.people_type_id = people_type.id
         WHERE
             people.username = #{username}
     </select>
@@ -45,24 +57,18 @@
             people.id = #{id}
     </select>
 
-    <select id="countPeople" resultType="int">
-        SELECT
-            COUNT(id) AS sum
-        FROM
-            people
-        WHERE
-            is_use = TRUE
-    </select>
-
     <select id="countPeopleByPeopleType" resultType="int">
         SELECT
            COUNT(id) AS sum
         FROM
             people
-        WHERE
-            people_type_id = #{peopleType}
-        AND
-            is_use = TRUE
+        <where>
+            <if test="peopleType != '' and peopleType != null">
+                AND people_type_id = #{peopleType}
+            </if>
+            AND
+                is_use = TRUE
+        </where>
     </select>
 
     <select id="selectPeopleByPage" resultMap="peopleMap">
@@ -71,8 +77,8 @@
             <if test="peopleType != 0">
                 AND people.people_type_id = #{peopleType}
             </if>
+            AND people.is_use = TRUE
         </where>
-        AND people.is_use = TRUE
         ORDER BY
             pid DESC
         LIMIT #{page}, #{maxNumber}

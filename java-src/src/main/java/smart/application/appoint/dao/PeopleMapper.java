@@ -13,8 +13,6 @@ public interface PeopleMapper extends BaseMapper<People> {
 
     People selectPeopleById(int id);
 
-    int countPeople();
-
     int countPeopleByPeopleType(@Param("peopleType") int peopleType);
 
     List<People> selectPeopleByPage(@Param("page") int page,

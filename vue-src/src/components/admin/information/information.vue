@@ -54,11 +54,21 @@
                     <el-button
                             size="mini"
                             type="danger"
+                            @click="_delete(scope.row.id)"
                             >删除
                     </el-button>
                 </template>
             </el-table-column>
         </el-table>
+        <div class="block">
+            <el-pagination
+                    @current-change="_sizeChange"
+                    :current-page="currentPage"
+                    :page-size="pageSize"
+                    layout="prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
+        </div>
     </div>
 </template>
 
@@ -70,20 +80,73 @@
 		data() {
 			return {
 				informations: [],
-                replace: true
+                currentPage: 1,
+                pageSize: 10,
+                total: 0,
 			}
 		},
 		components: {
 			firstTitle
         },
-        created: function () {
-			console.log(this.$store.state.token);
-            this.$http.get(this.$store.state.domain + "/admin/informations", {page: 1, per_page: 10}).then(response => {
-            	this.informations = response.data;
-            }, response => {
-            	console.log(response);
-            });
+        methods: {
+			_getInformations: function() {
+				this.$http.get(this.$store.state.domain + "/admin/informations", {
+					params: {page: this.currentPage, per_page: this.pageSize}
+				}, {emulateJSON: true}).then(response => {
+					this.informations = response.data;
+				}, response => {
+					console.log(response);
+				});
+            },
+            _sizeChange: function (currentPage) {
+				this.currentPage = currentPage;
+                this._getInformations();
+            },
+	        _delete: function (id) {
+		        this.$confirm('是否删除此公告?', '提示', {
+			        confirmButtonText: '确定',
+			        cancelButtonText: '取消',
+			        type: 'warning'
+		        }).then(() => {
+		        	this.$http.delete(this.$store.state.domain + "/admin/informations", {params: {id: id}}).then(res => {
+                        if (res.body === 1) {
+                        	this._getInformations();
+	                        this._getCount();
+	                        this.$message({
+		                        type: 'success',
+		                        message: '删除成功!'
+	                        });
+                        } else {
+                        	this.$message({
+                                type: 'waring',
+                                message: '服务器异常'
+                            });
+                        }
+                    }, res => {
+				        this.$message({
+					        type: 'waring',
+					        message: '服务器异常'
+				        });
+                    });
+		        }).catch(() => {
+			        this.$message({
+				        type: 'info',
+				        message: '已取消删除'
+			        });
+		        });
+	        },
+            _getCount: function () {
+	            this.$http.get(this.$store.state.domain + "/admin/information/count").then(res => {
+		            this.total = res.body;
+	            }, res => {
+		            console.log(res);
+	            });
+            }
         },
+		created: function () {
+            this._getCount();
+			this._getInformations();
+		},
 	}
 </script>
 

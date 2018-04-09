@@ -16,4 +16,6 @@ public interface InformationMapper extends BaseMapper<Information> {
 
     List<Information> selectInformationByPage(@Param("page") int page,
                                               @Param("per_page") int per_page);
+
+    int countInformations();
 }

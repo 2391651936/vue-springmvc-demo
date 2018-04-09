@@ -48,7 +48,9 @@
 
             <el-container>
                 <el-main>
-                    <router-view></router-view>
+                    <transition name="aaaa">
+                        <router-view></router-view>
+                    </transition>
                 </el-main>
 
                 <el-footer>
@@ -71,7 +73,7 @@
 				name: "超级管理员",
 				asides: [
 					{id: "1", clazz: "fa fa-comments fa-fw", name: "公告管理", url: {name: 'information'}},
-					{id: "2", clazz: "fa fa-user fa-fw", name: "人员管理", url: "/b"},
+					{id: "2", clazz: "fa fa-user fa-fw", name: "人员管理", url: {name: 'people'}},
 					{id: "3", clazz: "fa fa-file-text-o fa-fw", name: "设备类别管理", url: "/c"},
 					{id: "4", clazz: "fa fa-safari fa-fw", name: "导航四", url: "/d"},
 				],
@@ -79,9 +81,38 @@
 		},
         methods: {
 			logout: function () {
-				this.$store.commit("updateUserInfo", {});
-                this.ROUTER.push({name: "login"});
+				this.$store.commit("updateToken", "");
+				this.$http.post(this.$store.state.domain + "/logout").then(res => {
+					let data = res.bodyText;
+					if (data === '1000') {
+						this.$router.push({name: "login"});
+                    } else {
+						this.$notify({
+                            message: '服务器异常',
+                            type: 'warning'
+                        });
+                    }
+                }, res => {
+					console.log(res);
+                });
+
 			}
         }
 	}
 </script>
+
+<style>
+    .aaaa-enter-active {
+        transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        opacity: 0.8;
+    }
+    .aaaa-leave-active {
+        transition: all .3s ease;
+        opacity: 0;
+    }
+    .aaaa-enter, .aaaa-leave-to
+        /* .aaaa-leave-active for below version 2.1.8 */ {
+        transform: translateX(10px);
+        opacity: 0;
+    }
+</style>

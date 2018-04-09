@@ -1,5 +1,6 @@
 import information from '@/components/admin/information/information'
 import editInformation from '@/components/admin/information/editInformation'
+import people from '@/components/admin/people/people'
 
 export default [
 	{
@@ -12,6 +13,13 @@ export default [
 		path: "/",
 		name: 'information',
 		component: information,
+		meta: {requireAuth: true}
+	},
+	
+	{
+		path: 'people',
+		name: 'people',
+		component: people,
 		meta: {requireAuth: true}
 	}
 ]

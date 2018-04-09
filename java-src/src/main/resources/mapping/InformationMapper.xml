@@ -61,7 +61,18 @@
         INNER JOIN information_type ON information.information_type_id = information_type.id
         WHERE
             information_type.id = 1 AND information.is_use = TRUE
+        ORDER BY
+          information.id DESC
         Limit #{page}, #{per_page}
+    </select>
+
+    <select id="countInformations" resultType="int">
+        SELECT
+            count(id) AS sum
+        FROM
+            information
+        WHERE
+            is_use = TRUE and information_type_id = 1
     </select>
 
     <insert id="save">

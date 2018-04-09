@@ -27,11 +27,6 @@ public class PeopleService implements PeopleMapper {
     }
 
     @Override
-    public int countPeople() {
-        return peopleMapper.countPeople();
-    }
-
-    @Override
     public int countPeopleByPeopleType(int peopleType) {
         return peopleMapper.countPeopleByPeopleType(peopleType);
     }

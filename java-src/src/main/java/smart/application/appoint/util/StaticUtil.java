@@ -11,4 +11,6 @@ public class StaticUtil {
     public static final String APPEAR_ERROR = "-1";  // 出现异常
     public static final String USERNAME_NOT_FOUND = "1001";  // 账号不存在
     public static final String PASSWORD_ERROR = "1002";  // 密码不正确
+    public static final String LOGOUT_SUCCESS = "1000";  // 退出成功
+    public static final String LOGOUT_FAIL = "-1000";  // 退出成功
 }

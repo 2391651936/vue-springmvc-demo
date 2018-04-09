@@ -18,6 +18,10 @@ export default new Router({
 			name: 'login',
 			component: login,
 			meta: {requireAuth: false}
+		},
+		{
+			path: '/',
+			meta: {requireAuth: true}
 		}
 	]
 })

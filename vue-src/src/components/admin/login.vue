@@ -4,11 +4,20 @@
             <h1>登录</h1>
             <el-form>
                 <el-form-item label="账号">
-                    <el-input type="text" id="user" v-model="user.username" placeholder="请输入账号" @blur="usernameBlur"></el-input>
+                    <el-input type="text" 
+                              id="user" v-model="user.username" 
+                              placeholder="请输入账号" 
+                              @blur="usernameBlur" 
+                              @keyup.enter.native="submitForm"></el-input>
                     <span class="err">{{ err.usernameErr }}</span>
                 </el-form-item>
                 <el-form-item label="密码">
-                    <el-input type="password" id="password" v-model="user.password" placeholder="请输入密码" @blur="passwordBlur"></el-input>
+                    <el-input type="password" 
+                              id="password" 
+                              v-model="user.password" 
+                              placeholder="请输入密码" 
+                              @blur="passwordBlur" 
+                              @keyup.enter.native="submitForm"></el-input>
                     <span class="err">{{ err.passwordErr }}</span>
                 </el-form-item>
                 <el-button type="primary" @click="submitForm">提交</el-button>
@@ -51,7 +60,7 @@
                         }
                     }
                 }
-                this.$http.post("http://localhost:8080/v1/login", JSON.stringify(this.user)).then(res => {
+                this.$http.post(this.$store.state.domain + "/login", JSON.stringify(this.user)).then(res => {
                     let data = res.bodyText;
                     if (data === 1001) {
                         this.$notify({
@@ -64,8 +73,8 @@
                             type: 'warning'
                         });
                     } else {
-                    	this.$store.commit("updateUserInfo", data);
-                        this.ROUTER.push({name: "information"});
+                        this.$store.commit("updateToken", data);
+                        this.$router.push({name: "information"});
                     }
                 }, res => {
                     console.log(res)

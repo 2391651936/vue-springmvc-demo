@@ -16,18 +16,14 @@ Vue.use(VueResource);
 Vue.http.options.xhr = { withCredentials: true };
 Vue.use(Vuex);
 
-Vue.prototype.HOST = "http://localhost:8080/v1";
-Vue.prototype.ROUTER = router;
-
 const store = new Vuex.Store({
 	state: {
-		domain: "http://localhost:8080/v1",
-		user: {},
-		token: 0,
+		domain: "http://127.0.0.1:8080/v1",
+		token: "",
 	},
 	mutations: {
 		//更新用户信息
-		updateUserInfo(state, id) {
+		updateToken(state, id) {
 			state.token = id;
 		}
 	}
@@ -36,6 +32,18 @@ const store = new Vuex.Store({
 Vue.http.interceptors.push((request, next) => {
 	request.credentials = true;
 	next();
+});
+
+router.beforeEach((to, form, next) => {
+	if (to.meta.requireAuth) {
+		if (store.state.token !== "") {
+			next();
+		} else {
+			next({name: "login"});
+		}
+	} else {
+		next();
+	}
 });
 
 /* eslint-disable no-new */
@@ -68,24 +76,3 @@ Date.prototype.format = function(fmt) {
 	}
 	return fmt;
 };
-
-
-// router.beforeEach((to, form, next) => {
-// 	if (to.meta.requireAuth) {
-// 		if (!isEmptyObject(store.state.user)) {
-// 			next();
-// 		} else {
-// 			next({name: "login"});
-// 		}
-// 	} else {
-// 		next();
-// 	}
-// });
-
-function isEmptyObject(obj) {
-	for (let key in obj) {
-		console.log(key);
-		return false;
-	}
-	return true;
-}
