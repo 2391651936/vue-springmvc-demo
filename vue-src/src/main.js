@@ -21,7 +21,7 @@ Vue.prototype.ROUTER = router;
 
 const store = new Vuex.Store({
 	state: {
-		domain: "http://127.0.0.1:8080/v1",
+		domain: "http://localhost:8080/v1",
 		user: {},
 		token: 0,
 	},

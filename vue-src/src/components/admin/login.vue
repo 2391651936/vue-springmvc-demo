@@ -51,7 +51,7 @@
                         }
                     }
                 }
-                this.$http.post("http://127.0.0.1:8080/v1/login", JSON.stringify(this.user)).then(res => {
+                this.$http.post("http://localhost:8080/v1/login", JSON.stringify(this.user)).then(res => {
                     let data = res.bodyText;
                     if (data === 1001) {
                         this.$notify({
