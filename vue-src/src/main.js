@@ -46,6 +46,26 @@ router.beforeEach((to, form, next) => {
 	}
 });
 
+Vue.prototype.$judge = function (data, name) {
+	if (data === 1) {
+		this.$message({
+			message: "操作成功",
+			type: "success"
+		});
+		this.$router.push({name: name});
+	} else if (data === -1) {
+		this.$message({
+			message: "系统错误，出现异常",
+			type: "error"
+		});
+	} else if (data === 0) {
+		this.$message({
+			message: "已经存在",
+			type: "error"
+		});
+	}
+};
+
 /* eslint-disable no-new */
 new Vue({
 	el: '#app',

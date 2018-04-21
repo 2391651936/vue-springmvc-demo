@@ -49,6 +49,27 @@
         INNER JOIN people_type ON people.people_type_id = people_type.id
         WHERE
             people.username = #{username}
+          AND
+            people.is_use = TRUE
+    </select>
+
+    <select id="findPeopleByUsername" resultMap="peopleMap">
+        SELECT
+            people_type.id AS tid,
+            people_type.`name` AS tname,
+            people.id AS pid,
+            people.people_type_id,
+            people.username,
+            people.`password`,
+            people.`name` AS pname,
+            people.phone,
+            people.email,
+            people.is_use
+        FROM
+            people
+        INNER JOIN people_type ON people.people_type_id = people_type.id
+        WHERE
+            people.username = #{username}
     </select>
 
     <select id="selectPeopleById" resultMap="peopleMap">

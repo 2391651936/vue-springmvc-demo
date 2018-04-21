@@ -1,4 +1,4 @@
-<template>
+0<template>
     <div>
         <el-row>
             <el-col :span="3">
@@ -17,7 +17,7 @@
                 </el-select>
             </el-col>
             <el-col :span="6" style="padding-top: 20px;">
-                <router-link :to="{name: 'editInformation'}">
+                <router-link :to="{name: 'editPeople'}">
                     <el-button size="mini" type="success" plain>创建</el-button>
                 </router-link>
             </el-col>
@@ -50,7 +50,9 @@
             </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button size="mini">编辑</el-button>
+                    <router-link :to="{name: 'editPeople', query: {id: scope.row.id}}">
+                        <el-button size="mini">编辑</el-button>
+                    </router-link>
                     <el-button size="mini" type="danger">删除</el-button>
                 </template>
             </el-table-column>

@@ -5,7 +5,6 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import smart.application.appoint.expression.UsernameNotFoundExpression;
 import smart.application.appoint.models.People;
 import smart.application.appoint.service.PeopleService;
 
@@ -31,14 +30,14 @@ public class AuthRealm extends AuthorizingRealm {
 
     // 认证、登录
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws UsernameNotFoundExpression {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws UnknownAccountException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         String username = token.getUsername();
         People people = peopleService.selectPeopleByUsername(username);
         if (people != null) {
             return new SimpleAuthenticationInfo(people, people.getPassword(), this.getClass().getName());
         } else {
-            throw new UsernameNotFoundExpression();
+            throw new UnknownAccountException();
         }
     }
 }

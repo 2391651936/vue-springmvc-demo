@@ -8,26 +8,32 @@
         </template>
 
         <el-form>
-            <el-form-item label="标题">
-                <el-input
-                        v-model="information.title"
-                        placeholder="请输入标题"
-                        clearable>
-                </el-input>
-            </el-form-item>
+            <el-row>
+                <el-col :span="10">
+                    <el-form-item label="标题">
+                        <el-input
+                                v-model="information.title"
+                                placeholder="请输入标题"
+                                clearable>
+                        </el-input>
+                    </el-form-item>
+                </el-col>
 
-            <el-form-item label="类别">
-                <el-select
-                        v-model="information.informationType.id"
-                        placeholder="请选择类别" style="width: 100%;">
-                    <el-option
-                            v-for="informationType in informationTypes"
-                            :key="informationType.id"
-                            :value="informationType.id"
-                            :label="informationType.name">
-                    </el-option>
-                </el-select>
-            </el-form-item>
+                <el-col :offset="2" :span="10">
+                    <el-form-item label="类别">
+                        <el-select
+                                v-model="information.informationType.id"
+                                placeholder="请选择类别" style="width: 100%;">
+                            <el-option
+                                    v-for="informationType in informationTypes"
+                                    :key="informationType.id"
+                                    :value="informationType.id"
+                                    :label="informationType.name">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+            </el-row>
 
             <el-form-item label="信息内容">
                 <el-input
@@ -38,6 +44,7 @@
                 </el-input>
             </el-form-item>
 
+
             <el-form-item label="是否发布">
                 <el-switch
                         v-model="information.isRelease"
@@ -46,19 +53,19 @@
                 </el-switch>
             </el-form-item>
 
-            <router-link :to="{name: 'information'}">
-                <el-button size="small" plain="">返回</el-button>
-            </router-link>
-            <el-button size="small" type="primary" plain
-                       @click="submit">提交</el-button>
+            <el-form-item>
+                <router-link :to="{name: 'information'}">
+                    <el-button size="small" plain="">返回</el-button>
+                </router-link>
+                <el-button size="small" type="primary" plain
+                           @click="submit">提交</el-button>
+            </el-form-item>
         </el-form>
     </div>
 </template>
 
 <script>
 	import firstTitle from '../../title.vue'
-	import ElFormItem from "../../../../node_modules/element-ui/packages/form/src/form-item.vue";
-	import ElForm from "../../../../node_modules/element-ui/packages/form/src/form.vue";
 
     export default {
 		name: 'editInformation',
@@ -79,8 +86,6 @@
             }
         },
         components: {
-	        ElForm,
-	        ElFormItem,
 	        firstTitle
         },
         created: function () {
@@ -106,32 +111,18 @@
 				// id === undefined 代表创建
 				if (this.id === undefined) {
 					this.$http.post(this.$store.state.domain + "/admin/informations", JSON.stringify(this.information)).then(res => {
-                        this.judge(res.data);
+                        this.$judge(res.data, "information");
 					}, res => {
 						console.log(res);
 					});
                 } else {
                     this.$http.put(this.$store.state.domain + "/admin/informations", JSON.stringify(this.information)).then(res => {
-                    	this.judge(res.data);
+                    	this.$judge(res.data, "information");
                     }, res => {
                     	console.log(res);
                     });
                 }
 			},
-            judge: function (data) {
-	            if (data === 1) {
-		            this.$message({
-			            message: "操作成功",
-			            type: "success"
-		            });
-		            this.$router.push({name: "information"});
-	            } else if (data === -1) {
-		            this.$message({
-			            message: "系统错误，出现异常",
-			            type: "error"
-		            });
-	            }
-            }
         }
     }
 </script>

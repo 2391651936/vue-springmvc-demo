@@ -1,9 +1,6 @@
 package smart.application.appoint.controller.admin;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import smart.application.appoint.models.People;
 import smart.application.appoint.models.PeopleType;
 import smart.application.appoint.service.PeopleService;
@@ -30,6 +27,21 @@ public class PeopleController {
             @RequestParam(value = "peopleType", defaultValue = "0") int peopleType
     ) {
         return peopleService.selectPeopleByPage(page - 1, per_page, peopleType);
+    }
+
+    @GetMapping("/people/{id}")
+    public People getPeopleById(@PathVariable("id") int id) {
+        return peopleService.selectPeopleById(id);
+    }
+
+    @PostMapping("/people")
+    public String savePeople(@RequestBody People people) {
+        return peopleService.savePeople(people);
+    }
+
+    @PutMapping("/people")
+    public String updatePeople(@RequestBody People people) {
+        return peopleService.updatePeople(people);
     }
 
     @GetMapping("/peopleTypes")

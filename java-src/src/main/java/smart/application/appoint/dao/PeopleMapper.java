@@ -11,6 +11,8 @@ import java.util.List;
 public interface PeopleMapper extends BaseMapper<People> {
     People selectPeopleByUsername(String username);
 
+    People findPeopleByUsername(String username);
+
     People selectPeopleById(int id);
 
     int countPeopleByPeopleType(@Param("peopleType") int peopleType);

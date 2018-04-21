@@ -1,22 +1,21 @@
 package smart.application.appoint.service;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
-import smart.application.appoint.expression.PasswordErrorExpression;
-import smart.application.appoint.expression.UsernameNotFoundExpression;
 import smart.application.appoint.models.People;
 import smart.application.appoint.util.StaticUtil;
 
 @Service
 public class LoginService {
 
-
     /**
      * 登录系统
-     * @param people 分妆前端的数据的 people
+     * @param people 封装前端的数据的 people
      * @return 成功、失败
      */
     public String login (People people) {
@@ -30,9 +29,13 @@ public class LoginService {
             People dbPeople = (People) subject.getPrincipal();
             session.setAttribute("user", dbPeople);
             return (String) session.getId();
-        } catch (UsernameNotFoundExpression e) {
+        } catch (UnknownAccountException e) {
+            // 账号不正确
+            e.printStackTrace();
             return StaticUtil.USERNAME_NOT_FOUND;
-        } catch (PasswordErrorExpression e) {
+        } catch (IncorrectCredentialsException e) {
+            // 密码不正确
+            e.printStackTrace();
             return StaticUtil.PASSWORD_ERROR;
         }
     }

@@ -32,7 +32,7 @@ public final class CaptchaUtil
     private static Random random = new Random();
 
     /*
-     * 获取6位随机数
+     * 获取4位随机数
      */
     private static String getRandomString()
     {
