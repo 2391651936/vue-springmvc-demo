@@ -101,7 +101,7 @@
             AND people.is_use = TRUE
         </where>
         ORDER BY
-            pid DESC
+            pid
         LIMIT #{page}, #{maxNumber}
     </select>
 

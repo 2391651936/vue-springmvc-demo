@@ -13,6 +13,8 @@
 
     <select id="selectEquipmentTypeByPage" resultType="EquipmentType">
         <include refid="selectEquipmentType"/>
+        ORDER BY
+            equipment_type.id DESC
         LIMIT #{page}, #{maxNumber}
     </select>
 

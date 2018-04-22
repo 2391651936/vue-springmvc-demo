@@ -53,7 +53,7 @@
                     <router-link :to="{name: 'editPeople', query: {id: scope.row.id}}">
                         <el-button size="mini">编辑</el-button>
                     </router-link>
-                    <el-button size="mini" type="danger">删除</el-button>
+                    <el-button size="mini" type="danger" @click="_delete(scope.row.id)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -113,6 +113,39 @@
             _selectChange() {
 				this._getPeople();
 				this._getCount();
+            },
+			_delete(id) {
+				this.$confirm('是否删除?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					this.$http.delete(this.$store.state.domain + "/admin/people", {params: {id: id}}).then(res => {
+						if (res.body === 1) {
+							this._getPeople();
+							this._getCount();
+							this.$message({
+								type: 'success',
+								message: '删除成功!'
+							});
+						} else {
+							this.$message({
+								type: 'waring',
+								message: '服务器异常'
+							});
+						}
+					}, res => {
+						this.$message({
+							type: 'waring',
+							message: '服务器异常'
+						});
+					});
+				}).catch(() => {
+					this.$message({
+						type: 'info',
+						message: '已取消删除'
+					});
+				});
             }
         },
         created() {

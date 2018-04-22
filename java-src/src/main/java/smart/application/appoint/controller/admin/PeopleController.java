@@ -44,6 +44,11 @@ public class PeopleController {
         return peopleService.updatePeople(people);
     }
 
+    @DeleteMapping("/people")
+    public String deletePeople(@RequestParam("id") int id) {
+        return peopleService.deletePeople(id);
+    }
+
     @GetMapping("/peopleTypes")
     public List<PeopleType> getPeopleType() {
         return peopleService.selectPeopleType();

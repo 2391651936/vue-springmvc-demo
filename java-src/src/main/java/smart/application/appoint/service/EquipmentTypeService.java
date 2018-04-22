@@ -3,6 +3,7 @@ package smart.application.appoint.service;
 import org.springframework.stereotype.Service;
 import smart.application.appoint.dao.EquipmentTypeMapper;
 import smart.application.appoint.models.EquipmentType;
+import smart.application.appoint.util.BaseDao;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -13,9 +14,12 @@ public class EquipmentTypeService implements EquipmentTypeMapper {
     @Resource
     private EquipmentTypeMapper equipmentTypeMapper;
 
+    @Resource
+    private BaseDao<EquipmentType> baseDao;
+
     @Override
     public List<EquipmentType> selectEquipmentTypeByPage(int page, int maxNumber) {
-        return equipmentTypeMapper.selectEquipmentTypeByPage(page, maxNumber);
+        return equipmentTypeMapper.selectEquipmentTypeByPage(page * maxNumber, maxNumber);
     }
 
     @Override
@@ -51,5 +55,17 @@ public class EquipmentTypeService implements EquipmentTypeMapper {
     @Override
     public void update(EquipmentType equipmentType) {
         equipmentTypeMapper.update(equipmentType);
+    }
+
+    public String saveEquipmentType(EquipmentType equipmentType) {
+        return baseDao.save(equipmentTypeMapper, equipmentType);
+    }
+
+    public String updateEquipmentType(EquipmentType equipmentType) {
+        return baseDao.update(equipmentTypeMapper, equipmentType);
+    }
+
+    public String deleteEquipmentType(int id) {
+        return baseDao.deleteById(equipmentTypeMapper, id);
     }
 }

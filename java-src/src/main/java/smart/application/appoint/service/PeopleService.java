@@ -81,11 +81,16 @@ public class PeopleService implements PeopleMapper {
         } else if (sqlPeople.getIsUse()) {
             return StaticUtil.EXIST;
         } else {
+            people.setId(sqlPeople.getId());
             return baseDao.update(peopleMapper, people);
         }
     }
 
     public String updatePeople(People people) {
         return baseDao.update(peopleMapper, people);
+    }
+
+    public String deletePeople(int id) {
+        return baseDao.deleteById(peopleMapper, id);
     }
 }
