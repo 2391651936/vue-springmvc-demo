@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="smart.application.appoint.mapper.ApplicationMapper">
+  <resultMap id="BaseResultMap" type="smart.application.appoint.entity.Application">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="equipment_id" jdbcType="INTEGER" property="equipmentId" />
+    <result column="apply_people_id" jdbcType="INTEGER" property="applyPeopleId" />
+    <result column="admin_people_id" jdbcType="INTEGER" property="adminPeopleId" />
+    <result column="violation_id" jdbcType="INTEGER" property="violationId" />
+    <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="is_agree" jdbcType="TINYINT" property="isAgree" />
+    <result column="is_use" jdbcType="TINYINT" property="isUse" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, equipment_id, apply_people_id, admin_people_id, violation_id, apply_time, start_time, 
+    end_time, is_agree, is_use
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from application
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from application
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="smart.application.appoint.entity.Application">
+    insert into application (id, equipment_id, apply_people_id, 
+      admin_people_id, violation_id, apply_time, 
+      start_time, end_time, is_agree, 
+      is_use)
+    values (#{id,jdbcType=INTEGER}, #{equipmentId,jdbcType=INTEGER}, #{applyPeopleId,jdbcType=INTEGER}, 
+      #{adminPeopleId,jdbcType=INTEGER}, #{violationId,jdbcType=INTEGER}, #{applyTime,jdbcType=TIMESTAMP}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{isAgree,jdbcType=TINYINT}, 
+      #{isUse,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="smart.application.appoint.entity.Application">
+    insert into application
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="equipmentId != null">
+        equipment_id,
+      </if>
+      <if test="applyPeopleId != null">
+        apply_people_id,
+      </if>
+      <if test="adminPeopleId != null">
+        admin_people_id,
+      </if>
+      <if test="violationId != null">
+        violation_id,
+      </if>
+      <if test="applyTime != null">
+        apply_time,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="isAgree != null">
+        is_agree,
+      </if>
+      <if test="isUse != null">
+        is_use,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="equipmentId != null">
+        #{equipmentId,jdbcType=INTEGER},
+      </if>
+      <if test="applyPeopleId != null">
+        #{applyPeopleId,jdbcType=INTEGER},
+      </if>
+      <if test="adminPeopleId != null">
+        #{adminPeopleId,jdbcType=INTEGER},
+      </if>
+      <if test="violationId != null">
+        #{violationId,jdbcType=INTEGER},
+      </if>
+      <if test="applyTime != null">
+        #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isAgree != null">
+        #{isAgree,jdbcType=TINYINT},
+      </if>
+      <if test="isUse != null">
+        #{isUse,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="smart.application.appoint.entity.Application">
+    update application
+    <set>
+      <if test="equipmentId != null">
+        equipment_id = #{equipmentId,jdbcType=INTEGER},
+      </if>
+      <if test="applyPeopleId != null">
+        apply_people_id = #{applyPeopleId,jdbcType=INTEGER},
+      </if>
+      <if test="adminPeopleId != null">
+        admin_people_id = #{adminPeopleId,jdbcType=INTEGER},
+      </if>
+      <if test="violationId != null">
+        violation_id = #{violationId,jdbcType=INTEGER},
+      </if>
+      <if test="applyTime != null">
+        apply_time = #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isAgree != null">
+        is_agree = #{isAgree,jdbcType=TINYINT},
+      </if>
+      <if test="isUse != null">
+        is_use = #{isUse,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="smart.application.appoint.entity.Application">
+    update application
+    set equipment_id = #{equipmentId,jdbcType=INTEGER},
+      apply_people_id = #{applyPeopleId,jdbcType=INTEGER},
+      admin_people_id = #{adminPeopleId,jdbcType=INTEGER},
+      violation_id = #{violationId,jdbcType=INTEGER},
+      apply_time = #{applyTime,jdbcType=TIMESTAMP},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      is_agree = #{isAgree,jdbcType=TINYINT},
+      is_use = #{isUse,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
