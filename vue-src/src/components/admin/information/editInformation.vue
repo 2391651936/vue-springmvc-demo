@@ -14,7 +14,8 @@
                         <el-input
                                 v-model="information.title"
                                 placeholder="请输入标题"
-                                clearable>
+                                clearable
+                                name="abc">
                         </el-input>
                     </el-form-item>
                 </el-col>

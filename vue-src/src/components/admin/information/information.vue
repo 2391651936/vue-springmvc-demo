@@ -8,6 +8,9 @@
                 <router-link :to="{name: 'editInformation'}">
                     <el-button size="mini" type="success" plain>创建</el-button>
                 </router-link>
+                <el-button size="mini" type="success" @click="_head" plain>HEAD测试</el-button>
+                <el-button size="mini" type="success" @click="_get" plain>GET测试</el-button>
+                <el-button size="mini" type="success" @click="_patch" plain>PATCH测试</el-button>
             </el-col>
         </el-row>
 
@@ -141,6 +144,15 @@
 	            }, res => {
 		            console.log(res);
 	            });
+            },
+            _head() {
+                this.$http.head(this.$store.state.domain + "/admin/information/count");
+            },
+            _get() {
+                this.$http.get(this.$store.state.domain + "/admin/information/count");
+            },
+            _patch() {
+                this.$http.patch(this.$store.state.domain + "/admin/information/count");
             }
         },
 		created: function () {

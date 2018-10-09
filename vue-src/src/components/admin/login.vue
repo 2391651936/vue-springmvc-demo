@@ -2,27 +2,24 @@
     <div>
         <div class="loginPage">
             <h1>登录</h1>
-            <el-form>
-                <el-form-item label="账号">
+            <el-form :model="user" :rules="rules" ref="ruleForm" label-width="55px">
+                <el-form-item label="账号" prop="username">
                     <el-input type="text" 
                               id="user" v-model="user.username" 
                               placeholder="请输入账号" 
-                              @blur="usernameBlur" 
                               @keyup.enter.native="submitForm"></el-input>
-                    <span class="err">{{ err.usernameErr }}</span>
                 </el-form-item>
-                <el-form-item label="密码">
+                <el-form-item label="密码" prop="password">
                     <el-input type="password" 
                               id="password" 
                               v-model="user.password" 
                               placeholder="请输入密码" 
-                              @blur="passwordBlur" 
                               @keyup.enter.native="submitForm"></el-input>
-                    <span class="err">{{ err.passwordErr }}</span>
                 </el-form-item>
                 <el-button type="primary" @click="submitForm">提交</el-button>
                 <el-button @click="reset">重置</el-button>
             </el-form>
+            <a href="http://baidu.com">baidu</a>
         </div>
     </div>
 </template>
@@ -36,9 +33,13 @@
                 	username: "",
                     password: "",
                 },
-                err: {
-                	usernameErr: "",
-                    passwordErr: ""
+                rules: {
+                    username: [
+                        {required:  true, message: "请输入账号", trigger: 'blur'}
+                    ],
+                    password: [
+                        {required: true, message: "请输入密码", trigger: 'blur'}
+                    ]
                 }
             };
         },
@@ -48,45 +49,32 @@
                 this.user.password = "";
 		    },
 	        submitForm: function () {
-    			let flag = true;
-                for (let prop in this.user) {
-                	if (this.user.hasOwnProperty(prop)) {
-                		if (this.user[prop] === "") {
-			                this.$notify({
-				                message: '请填写账号密码',
-				                type: 'warning'
-			                });
-			                return;
-                        }
-                    }
-                }
-                this.$http.post(this.$store.state.domain + "/login", JSON.stringify(this.user)).then(res => {
-                    let data = res.bodyText;
-                    if (data === 1001) {
-                        this.$notify({
-                            message: '账号不存在',
-                            type: 'warning'
+                this.$refs.ruleForm.validate((valid) => {
+                    if (valid) {
+                        this.$http.post(this.$store.state.domain + "/login", JSON.stringify(this.user)).then(res => {
+                            let data = res.bodyText;
+                            if (data === 1001) {
+                                this.$notify({
+                                    message: '账号不存在',
+                                    type: 'warning'
+                                });
+                            } else if (data === 1002) {
+                                this.$notify({
+                                    message: '账号或密码不正确',
+                                    type: 'warning'
+                                });
+                            } else {
+                                this.$store.commit("updateToken", data);
+                                this.$router.push({name: "information"});
+                            }
+                        }, res => {
+                            console.log(res)
                         });
-                    } else if (data === 1002) {
-                        this.$notify({
-                            message: '账号或密码不正确',
-                            type: 'warning'
-                        });
-                    } else {
-                        this.$store.commit("updateToken", data);
-                        this.$router.push({name: "information"});
                     }
-                }, res => {
-                    console.log(res)
+                    
                 });
             },
-	        usernameBlur: function () {
-    			this.err.usernameErr = this.user.username === ""? "账号不能为空": "";
-	        },
-            passwordBlur: function () {
-                this.err.passwordErr = this.user.password === ""? "密码不能为空": "";
-            }
-        }
+        },
     }
 </script>
 
